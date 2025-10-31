@@ -2,7 +2,9 @@ import axios from "axios";
 
 const API = process.env.REACT_APP_API_URL || "http://localhost:4000/api";
 
-// -------- Media --------
+/* ------------------------------------------------------
+ 📰 MEDIA ENDPOINTS
+------------------------------------------------------ */
 export const fetchMedia = async () => {
   try {
     const res = await axios.get(`${API}/media`);
@@ -42,7 +44,9 @@ export const viewMedia = async ({ mediaId, viewerAccountId }) => {
   }
 };
 
-// -------- Quiz --------
+/* ------------------------------------------------------
+ ❓ QUIZ ENDPOINTS
+------------------------------------------------------ */
 export const submitQuiz = async ({ userId, quizId, answers }) => {
   try {
     const res = await axios.post(`${API}/answer`, { userId, quizId, answers });
@@ -53,7 +57,9 @@ export const submitQuiz = async ({ userId, quizId, answers }) => {
   }
 };
 
-// -------- Game --------
+/* ------------------------------------------------------
+ 🎮 GAME ENDPOINTS
+------------------------------------------------------ */
 export const submitGame = async ({ userId, gameId, score }) => {
   try {
     const res = await axios.post(`${API}/game/complete`, {
@@ -68,7 +74,9 @@ export const submitGame = async ({ userId, gameId, score }) => {
   }
 };
 
-// -------- Donation --------
+/* ------------------------------------------------------
+ 💸 DONATION ENDPOINTS
+------------------------------------------------------ */
 export const submitDonation = async ({ donorId, amount, currency }) => {
   try {
     const res = await axios.post(`${API}/donate`, {
@@ -83,7 +91,9 @@ export const submitDonation = async ({ donorId, amount, currency }) => {
   }
 };
 
-// -------- Referral --------
+/* ------------------------------------------------------
+ 🧾 REFERRAL ENDPOINTS
+------------------------------------------------------ */
 export const submitReferral = async ({ referrerId, newUserId }) => {
   try {
     const res = await axios.post(`${API}/referral`, { referrerId, newUserId });
@@ -94,7 +104,11 @@ export const submitReferral = async ({ referrerId, newUserId }) => {
   }
 };
 
-// -------- Leaderboard / User Balance --------
+/* ------------------------------------------------------
+ 🏆 LEADERBOARD & BALANCE ENDPOINTS
+------------------------------------------------------ */
+
+// ✅ Get leaderboard
 export const fetchLeaderboard = async () => {
   try {
     const res = await axios.get(`${API}/leaderboard`);
@@ -105,12 +119,41 @@ export const fetchLeaderboard = async () => {
   }
 };
 
+// ✅ Get individual user balance
 export const fetchUserBalance = async (userId) => {
   try {
-    const res = await axios.get(`${API}/userBalance/${userId}`);
+    const res = await axios.get(`${API}/leaderboard/userBalance/${userId}`);
     return res.data.balance || 0;
   } catch (err) {
     console.error("❌ fetchUserBalance error:", err.message);
     return 0;
+  }
+};
+
+// ✅ NEW: Update leaderboard after user activity
+export const updateLeaderboard = async ({ userId, points }) => {
+  try {
+    const res = await axios.post(`${API}/leaderboard/update`, {
+      userId,
+      points,
+    });
+    return res.data;
+  } catch (err) {
+    console.error("❌ updateLeaderboard error:", err.message);
+    throw err;
+  }
+};
+
+// ✅ NEW: Update user balance after reward
+export const updateUserBalance = async ({ userId, amount }) => {
+  try {
+    const res = await axios.post(`${API}/leaderboard/updateBalance`, {
+      userId,
+      amount,
+    });
+    return res.data;
+  } catch (err) {
+    console.error("❌ updateUserBalance error:", err.message);
+    throw err;
   }
 };

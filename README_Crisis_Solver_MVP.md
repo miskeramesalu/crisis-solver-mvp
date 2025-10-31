@@ -147,9 +147,6 @@ cd ../frontend
 npm install
 npm start
 ```
-
-## Visit the app at 👉 **http://localhost:3000**
-
 ## 📡 9. API Overview
 
 | Endpoint               | Method | Description               |
